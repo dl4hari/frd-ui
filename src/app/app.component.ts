@@ -48,13 +48,23 @@ dropdownOptions: any = {"transactionRecall":[],"empInitial":[],"subjectType":[],
 			return `with: ${reason}`;
 		}
 	}
-   onSubmit(item: any) {
+   onSubmit(item:any) {
     console.log(item.form.value,"submit")
+
+        const data = {
+      ...(item?.form?.value??{}),
+      ...(item?.form?.value?.impactAccountNam ? {impactAccountName: Object.values(item?.form?.value?.impactAccountName??{})} : {}),
+      ...(item?.form?.value?.fraudIntakeActivityBean ? {fraudIntakeActivityBean: Object.values(item?.form?.value?.fraudIntakeActivityBean??{})} : {}),
+      ...(item?.form?.value?.fraudIntakeSubjectBean ? {fraudIntakeSubjectBean: Object.values(item?.form?.value?.fraudIntakeSubjectBean??{})} : {}),
+    }
+
+    console.log(data, "2222")
+
    
     if(item.form.status === "VALID"){
-       this.api.post("/fraud-intake/save2" , item.form.value, this.fileToUpload).subscribe(data => { 
+        this.api.post("/fraud-intake/save2" , data, this.fileToUpload).subscribe(data => { 
 
-      })
+       })
     }
    
 
